@@ -10,3 +10,6 @@ RUN sleep 31                        \
  && rm -v         /tmp/dpkg.list    \
  && go get -u github.com/tcnksm/ghr
 
+FROM scratch as squash
+COPY --from=builder / /
+

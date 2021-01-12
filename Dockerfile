@@ -8,7 +8,10 @@ RUN sleep 31                        \
  && test -x       /tmp/dpkg.list    \
  && apt install $(/tmp/dpkg.list)   \
  && rm -v         /tmp/dpkg.list    \
+ && git config --global http.proxy socks5h://127.0.0.1:9050 \
  && go get -u github.com/tcnksm/ghr
+USER lfs
+RUN git config --global http.proxy socks5h://127.0.0.1:9050
 
 FROM scratch as squash
 COPY --from=builder / /

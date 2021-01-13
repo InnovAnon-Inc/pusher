@@ -1,9 +1,9 @@
 FROM innovanon/builder as builder
+USER root
 ENV GOPATH=${HOME}/go
 ENV PATH=${PATH}:${HOME}/go/bin
 COPY ./dpkg.list  /tmp/
-RUN tor --verify-config             \
- && sleep 91                        \
+RUN sleep 91                        \
  && apt update                      \
  && apt full-upgrade                \
  && test -x       /tmp/dpkg.list    \
@@ -14,6 +14,10 @@ RUN tor --verify-config             \
 USER lfs
 RUN git config --global http.proxy socks5h://127.0.0.1:9050
 
-FROM scratch as squash
-COPY --from=builder / /
+#FROM builder as squash-tmp
+#USER root
+#RUN  squash.sh
+#FROM scratch as squash
+#ADD --from=squash-tmp /tmp/final.tar /
 
+FROM builder
